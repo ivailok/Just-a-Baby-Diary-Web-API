@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using JustABabyDiaryWebAPI.Models;
 using MongoDB.Driver;
 
 namespace JustABabyDiaryWebAPI.DatabaseManipulators
@@ -14,6 +15,11 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
         {
             DatabaseProviders.DatabaseProvider provider = new DatabaseProviders.DatabaseProvider();
             this.db = provider.GetMongoDatabase();
+        }
+
+        public User Register(User user)
+        {
+            
         }
     }
 }
