@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using JustABabyDiaryWebAPI.Models;
 using MongoDB.Driver;
+using JustABabyDiaryWebAPI.Models.ControllerModels;
 
 namespace JustABabyDiaryWebAPI.Controllers
 {
-    public class UsersController : ApiController
+    public class UsersController : BaseController
     {
         private const int MinUsernameLength = 6;
         private const int MaxUsernameLength = 30;
@@ -40,11 +42,12 @@ namespace JustABabyDiaryWebAPI.Controllers
                     User user = new User()
                     {
                         Username = userModel.Username,
-                        DisplayName = userModel.DisplayName,
-                        AuthCode = userModel.AuthCode
+                        Nickname = userModel.DisplayName,
+                        AuthCode = userModel.AuthCode,
+                        Email = userModel.Email
                     };
 
-                    User registeredUser = this.db.Register(user);
+                    User registeredUser = ;
 
                     var loggedModel = new LoggedUserModel()
                     {

@@ -168,6 +168,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BabyEventsController.cs" />
     <Compile Include="Controllers\BabyProfilesController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DatabaseProviders\DatabaseProvider.cs" />
@@ -176,6 +177,9 @@
     </Compile>
     <Compile Include="Models\BabyEvent.cs" />
     <Compile Include="Models\BabyProfile.cs" />
+    <Compile Include="Models\ControllerModels\LoggedUserModel.cs" />
+    <Compile Include="Models\ControllerModels\UserLoginModel.cs" />
+    <Compile Include="Models\ControllerModels\UserRegisterModel.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
