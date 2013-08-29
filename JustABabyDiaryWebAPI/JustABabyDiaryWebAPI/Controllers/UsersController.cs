@@ -81,33 +81,28 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
-        //[ActionName("login")]
-        //public HttpResponseMessage PostLoginUser(UserLoginModel userModel)
-        //{
-        //    HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
-        //        () =>
-        //        {
-        //            User user = new User()
-        //            {
-        //                Username = userModel.Username,
-        //                AuthCode = userModel.AuthCode
-        //            };
+        [ActionName("login")]
+        public HttpResponseMessage PostLoginUser(UserLoginModel userModel)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+                () =>
+                {
+                    User registeredUser = this.manipulator.Login(userModel);
 
-        //            User registeredUser = this.db.Login(user);
+                    var loggedModel = new LoggedUserModel()
+                    {
+                        Id = registeredUser.Id.ToString(),
+                        Nickname = registeredUser.Nickname,
+                        SessionKey = registeredUser.SessionKey
+                    };
 
-        //            var loggedModel = new LoggedUserModel()
-        //            {
-        //                DisplayName = registeredUser.DisplayName,
-        //                SessionKey = registeredUser.SessionKey
-        //            };
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, loggedModel);
+                    return response;
+                }
+            );
 
-        //            var response = this.Request.CreateResponse(HttpStatusCode.Created, loggedModel);
-        //            return response;
-        //        }
-        //    );
-
-        //    return responseMsg;
-        //}
+            return responseMsg;
+        }
 
         private void ValidateUser(UserRegisterModel userModel)
         {

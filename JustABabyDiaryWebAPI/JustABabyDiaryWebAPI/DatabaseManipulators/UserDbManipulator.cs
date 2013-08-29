@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using JustABabyDiaryWebAPI.Models;
+using JustABabyDiaryWebAPI.Models.ControllerModels;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -80,6 +81,34 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
                 { "$set", new BsonDocument("SessionKey", "") }
             };
             this.usersCollection.Update(query, update);
+        }
+
+        public User Login(UserLoginModel model)
+        {
+            User user = this.CheckUsername(model.Username);
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid username or password.");
+            }
+
+            user.SessionKey = this.GenerateSessionKey(model.Username);
+
+            var query = new QueryDocument {
+                { "Username", user.Username },
+            };
+            var update = new UpdateDocument {
+                { "$set", new BsonDocument("SessionKey", user.SessionKey) }
+            };
+            this.usersCollection.Update(query, update);
+
+            return user;
+        }
+
+        private User CheckUsername(string username)
+        {
+            return this.usersCollection.AsQueryable()
+                .Single(u => u.Username == username);
         }
 
         private User GetUserBySessionKey(string sessionKey)
