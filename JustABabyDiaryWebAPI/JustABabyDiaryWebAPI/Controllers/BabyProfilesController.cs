@@ -31,8 +31,9 @@ namespace JustABabyDiaryWebAPI.Controllers
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
                 {
+                    ObjectId userIdObj = new ObjectId(userId);
                     var usersWithSpecificId = from u in this.db.GetCollection<User>("userInfo").AsQueryable()
-                                              where u.Id.ToString() == userId
+                                              where u.Id == userIdObj
                                               select u;
                     User selectedUser = usersWithSpecificId.FirstOrDefault();
 
