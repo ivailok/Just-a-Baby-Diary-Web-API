@@ -127,7 +127,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                 var update = new UpdateDocument { { "$set", new BsonDocument("BirthDay", babyModel.BirthDay) } };
                 babyCollection.Update(query, update);
             }
-            if (babyModel.BirthWeight != null)
+            if (babyModel.BirthWeight != 0)
             {
                 var query = new QueryDocument { { "BirthWeight", selectedBabyProfile.BirthWeight } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("BirthWeight", babyModel.BirthWeight) } };
@@ -139,7 +139,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                 var update = new UpdateDocument { { "$set", new BsonDocument("Gender", babyModel.Gender) } };
                 babyCollection.Update(query, update);
             }
-            if (babyModel.Height != null)
+            if (babyModel.Height != 0)
             {
                 var query = new QueryDocument { { "Height", selectedBabyProfile.Height } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Height", babyModel.Height) } };
