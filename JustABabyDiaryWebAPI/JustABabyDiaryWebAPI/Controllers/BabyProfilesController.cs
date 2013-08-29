@@ -36,22 +36,22 @@ namespace JustABabyDiaryWebAPI.Controllers
                                               select u;
                     User selectedUser = usersWithSpecificId.FirstOrDefault();
 
-                    if (selectedUser==null)
+                    if (selectedUser == null)
                     {
                         throw new NullReferenceException("User is logged out or does not exist!");
                     }
 
                     BabyProfile babyProfile = new BabyProfile()
                     {
-                        Name=babyModel.Name,
-                        BirthDay=babyModel.BirthDay,
-                        Mother=babyModel.Mother,
-                        Father=babyModel.Father,
-                        Gender=babyModel.Gender,
-                        BirthWeight=babyModel.BirthWeight,
-                        Height=babyModel.Height,
-                        TownOfBirth=babyModel.TownOfBirth,
-                        PictureName=babyModel.PictureName
+                        Name = babyModel.Name,
+                        BirthDay = babyModel.BirthDay,
+                        Mother = babyModel.Mother,
+                        Father = babyModel.Father,
+                        Gender = babyModel.Gender,
+                        BirthWeight = babyModel.BirthWeight,
+                        Height = babyModel.Height,
+                        TownOfBirth = babyModel.TownOfBirth,
+                        PictureName = babyModel.PictureName
                     };
                     var collection = this.db.GetCollection("user" + selectedUser.Id.ToString());
                     collection.Insert<BabyProfile>(babyProfile);
@@ -60,6 +60,48 @@ namespace JustABabyDiaryWebAPI.Controllers
                     return response;
                 }
             );
+
+            return responseMsg;
+        }
+
+        [HttpPut]
+        public HttpResponseMessage UpdateBabyProfile([FromBody]BabyProfileModel babyModel,
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+               () =>
+               {
+                   var usersWithSpecificSessionKey = from u in this.db.GetCollection<User>("usersInfo").AsQueryable()
+                                             where u.SessionKey == sessionKey
+                                             select u;
+                   User selectedUser = usersWithSpecificSessionKey.FirstOrDefault();
+
+                   if (selectedUser == null)
+                   {
+                       throw new NullReferenceException("User is logged out or does not exist!");
+                   }
+
+                   var babyCollection = this.db.GetCollection<BabyProfile>("user" + selectedUser.Id.ToString());
+                   var babyProfilesWithSpecific = from p in babyCollection.AsQueryable()
+                                     where p.Name == babyModel.Name
+                                     select p;
+
+                   var selectedBabyProfile = babyProfilesWithSpecific.FirstOrDefault();
+
+                   if (babyModel.Name != null)
+                   {
+                       var query = new QueryDocument { { "Name", selectedBabyProfile.Name } };
+                       var update = new UpdateDocument { { "$set", new BsonDocument("Name", babyModel.Name) } };
+                       babyCollection.Update(query, update);
+                   }
+
+                   //var query = new QueryDocument { { "Username", selectedUser.Username } };
+                   //var update = new UpdateDocument {{ "$set", new BsonDocument("SessionKey", "") }};
+                   //this.usersCollection.Update(query, update);
+                   var response = this.Request.CreateResponse(HttpStatusCode.OK);
+                   return response;
+               }
+           );
 
             return responseMsg;
         }
