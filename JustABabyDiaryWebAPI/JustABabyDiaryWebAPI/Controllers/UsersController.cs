@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ValueProviders;
+using BloggingSystem.WebAPI.Attributes;
 using JustABabyDiaryWebAPI.Models;
 using MongoDB.Driver;
 using JustABabyDiaryWebAPI.Models.ControllerModels;
@@ -65,20 +66,20 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
-        //[ActionName("logout")]
-        //public HttpResponseMessage PutLogoutUser(
-        //    [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
-        //{
-        //    HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
-        //        () =>
-        //        {
-        //            this.db.Logout(sessionKey);
-        //            HttpResponseMessage response = this.Request.CreateResponse(HttpStatusCode.OK);
-        //            return response;
-        //        });
+        [ActionName("logout")]
+        public HttpResponseMessage PutLogoutUser(
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+                () =>
+                {
+                    this.manipulator.Logout(sessionKey);
+                    HttpResponseMessage response = this.Request.CreateResponse(HttpStatusCode.OK);
+                    return response;
+                });
 
-        //    return responseMsg;
-        //}
+            return responseMsg;
+        }
 
         //[ActionName("login")]
         //public HttpResponseMessage PostLoginUser(UserLoginModel userModel)

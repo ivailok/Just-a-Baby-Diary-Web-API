@@ -58,6 +58,24 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
             }
         }
 
+        public void Logout(string sessionKey)
+        {
+            var foundUserBySessionKey = this.GetUserBySessionKey(sessionKey);
+
+            if (foundUserBySessionKey == null)
+            {
+                throw new ArgumentException("Session has expired.");
+            }
+
+            foundUserBySessionKey.SessionKey = null;
+        }
+
+        private User GetUserBySessionKey(string sessionKey)
+        {
+            return this.usersCollecion.AsQueryable()
+                .Single(u => u.SessionKey == sessionKey);
+        }
+
         private User GetUserByUsername(string username)
         {
             return this.usersCollecion.AsQueryable()
