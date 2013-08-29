@@ -53,15 +53,10 @@ namespace JustABabyDiaryWebAPI.Controllers
                         TownOfBirth=babyModel.TownOfBirth,
                         PictureName=babyModel.PictureName
                     };
-
-<<<<<<< HEAD
-                    var collection = this.db.GetCollection<BabyProfile>("user"+selectedUser.Id.ToString());
-=======
                     var collection = this.db.GetCollection("user" + selectedUser.Id.ToString());
->>>>>>> finally baby profile is created
                     collection.Insert<BabyProfile>(babyProfile);
 
-                    var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id.ToString() );
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id.ToString());
                     return response;
                 }
             );

@@ -9,14 +9,6 @@ namespace JustABabyDiaryWebAPI.Models.ControllerModels
 {
     public class BabyProfileModel
     {
-<<<<<<< HEAD
-        [BsonId]
-        [BsonIgnoreIfDefault]
-        public ObjectId Id { get; set; }
-
-        [BsonIgnoreIfNull]
-=======
->>>>>>> finally baby profile is created
         public string Name { get; set; }
 
         public DateTime BirthDay { get; set; }
