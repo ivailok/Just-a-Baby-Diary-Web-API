@@ -39,13 +39,18 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
 
         public User Register(User user)
         {
-            var foundUser = this.GetUser(user);
+            var foundUserByUsername = this.GetUserByUsername(user.Username);
 
-            if (foundUser == null)
+            if (foundUserByUsername == null)
             {
-                user.SessionKey = this.GenerateSessionKey(user.Username);
-                this.usersCollecion.Insert<User>(user);
-                return user;
+                var foundUserByEmail = this.GetUserByEmail(user.Email);
+                if (foundUserByEmail == null)
+                {
+                    user.SessionKey = this.GenerateSessionKey(user.Username);
+                    this.usersCollecion.Insert<User>(user);
+                    return user;
+                }
+                throw new ArgumentException("Email is already taken.");
             }
             else
             {
@@ -53,10 +58,17 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
             }
         }
 
-        private User GetUser(User user)
+        private User GetUserByUsername(string username)
         {
             return this.usersCollecion.AsQueryable()
-                .Where(u => u.Username == user.Username)
+                .Where(u => u.Username == username)
+                .Select(u => u).FirstOrDefault();
+        }
+
+        private User GetUserByEmail(string email)
+        {
+            return this.usersCollecion.AsQueryable()
+                .Where(u => u.Email == email)
                 .Select(u => u).FirstOrDefault();
         }
     }
