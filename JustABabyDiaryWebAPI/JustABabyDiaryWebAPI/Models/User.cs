@@ -25,14 +25,6 @@ namespace JustABabyDiaryWebAPI.Models
 
         public string Email { get; set; }
 
-        public ICollection<BabyProfile> BabyProfiles { get; set; }
-
-        [BsonConstructor]
-        public User()
-        {
-            this.BabyProfiles = new List<BabyProfile>();
-        }
-
         [BsonConstructor]
         public User(string username, string nickname, string authCode, string email)
         {
@@ -40,7 +32,6 @@ namespace JustABabyDiaryWebAPI.Models
             this.Nickname = nickname;
             this.AuthCode = authCode;
             this.Email = email;
-            this.BabyProfiles = new List<BabyProfile>();
         }
     }
 }
