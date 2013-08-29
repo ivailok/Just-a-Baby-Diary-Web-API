@@ -21,16 +21,24 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
 
         public User Register(User user)
         {
-            var foundUser = this.usersCollecion.AsQueryable().Single(u => u.Username == user.Username);
+            var foundUser = this.GetUser(user);
 
             if (foundUser == null)
             {
-                var result = this.usersCollecion.Insert<User>(user);
+                this.usersCollecion.Insert<User>(user);
+                return user;
             }
             else
             {
                 throw new ArgumentException("Username is already taken.");
             }
+        }
+
+        private User GetUser(User user)
+        {
+            return this.usersCollecion.AsQueryable()
+                .Where(u => u.Username == user.Username)
+                .Select(u => u).FirstOrDefault();
         }
     }
 }

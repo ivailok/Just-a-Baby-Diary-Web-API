@@ -25,6 +25,10 @@ namespace JustABabyDiaryWebAPI.Models
 
         public string Email { get; set; }
 
+        public User()
+        {
+        }
+
         [BsonConstructor]
         public User(string username, string nickname, string authCode, string email)
         {

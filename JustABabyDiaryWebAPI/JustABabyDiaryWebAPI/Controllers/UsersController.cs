@@ -7,6 +7,7 @@ using System.Web.Http;
 using JustABabyDiaryWebAPI.Models;
 using MongoDB.Driver;
 using JustABabyDiaryWebAPI.Models.ControllerModels;
+using JustABabyDiaryWebAPI.DatabaseManipulators;
 
 namespace JustABabyDiaryWebAPI.Controllers
 {
@@ -23,12 +24,11 @@ namespace JustABabyDiaryWebAPI.Controllers
 
         private const int Sha1Length = 40;
 
-        private MongoDatabase db;
+        private UserDbManipulator manipulator;
 
         public UsersController()
         {
-            DatabaseProviders.DatabaseProvider provider = new DatabaseProviders.DatabaseProvider();
-            this.db = provider.GetMongoDatabase();
+            manipulator = new UserDbManipulator();
         }
 
         [ActionName("register")]
@@ -47,7 +47,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                         Email = userModel.Email
                     };
 
-                    User registeredUser = ;
+                    User registeredUser = this.manipulator.Register(user);
 
                     var loggedModel = new LoggedUserModel()
                     {
@@ -63,48 +63,48 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
-        [ActionName("logout")]
-        public HttpResponseMessage PutLogoutUser(
-            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
-        {
-            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
-                () =>
-                {
-                    this.db.Logout(sessionKey);
-                    HttpResponseMessage response = this.Request.CreateResponse(HttpStatusCode.OK);
-                    return response;
-                });
+        //[ActionName("logout")]
+        //public HttpResponseMessage PutLogoutUser(
+        //    [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
+        //{
+        //    HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+        //        () =>
+        //        {
+        //            this.db.Logout(sessionKey);
+        //            HttpResponseMessage response = this.Request.CreateResponse(HttpStatusCode.OK);
+        //            return response;
+        //        });
 
-            return responseMsg;
-        }
+        //    return responseMsg;
+        //}
 
-        [ActionName("login")]
-        public HttpResponseMessage PostLoginUser(UserLoginModel userModel)
-        {
-            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
-                () =>
-                {
-                    User user = new User()
-                    {
-                        Username = userModel.Username,
-                        AuthCode = userModel.AuthCode
-                    };
+        //[ActionName("login")]
+        //public HttpResponseMessage PostLoginUser(UserLoginModel userModel)
+        //{
+        //    HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+        //        () =>
+        //        {
+        //            User user = new User()
+        //            {
+        //                Username = userModel.Username,
+        //                AuthCode = userModel.AuthCode
+        //            };
 
-                    User registeredUser = this.db.Login(user);
+        //            User registeredUser = this.db.Login(user);
 
-                    var loggedModel = new LoggedUserModel()
-                    {
-                        DisplayName = registeredUser.DisplayName,
-                        SessionKey = registeredUser.SessionKey
-                    };
+        //            var loggedModel = new LoggedUserModel()
+        //            {
+        //                DisplayName = registeredUser.DisplayName,
+        //                SessionKey = registeredUser.SessionKey
+        //            };
 
-                    var response = this.Request.CreateResponse(HttpStatusCode.Created, loggedModel);
-                    return response;
-                }
-            );
+        //            var response = this.Request.CreateResponse(HttpStatusCode.Created, loggedModel);
+        //            return response;
+        //        }
+        //    );
 
-            return responseMsg;
-        }
+        //    return responseMsg;
+        //}
 
         private void ValidateUser(UserRegisterModel userModel)
         {
