@@ -41,10 +41,10 @@ namespace JustABabyDiaryWebAPI.Controllers
                         throw new NullReferenceException("User is logged out or does not exist!");
                     }
 
-                    BabyProfile babyProfile = new BabyProfile
+                    BabyProfile babyProfile = new BabyProfile()
                     {
                         Name=babyModel.Name,
-                        //BirthDay=babyModel.BirthDay,
+                        BirthDay=babyModel.BirthDay,
                         Mother=babyModel.Mother,
                         Father=babyModel.Father,
                         Gender=babyModel.Gender,
@@ -54,10 +54,14 @@ namespace JustABabyDiaryWebAPI.Controllers
                         PictureName=babyModel.PictureName
                     };
 
+<<<<<<< HEAD
                     var collection = this.db.GetCollection<BabyProfile>("user"+selectedUser.Id.ToString());
+=======
+                    var collection = this.db.GetCollection("user" + selectedUser.Id.ToString());
+>>>>>>> finally baby profile is created
                     collection.Insert<BabyProfile>(babyProfile);
 
-                    var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id);
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id.ToString() );
                     return response;
                 }
             );

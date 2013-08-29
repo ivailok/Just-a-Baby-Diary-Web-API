@@ -20,7 +20,6 @@ namespace JustABabyDiaryWebAPI.Models
 
         public ICollection<string> PictureNames { get; set; }
 
-        [BsonConstructor]
         public BabyEvent()
         {
             this.PictureNames = new List<string>(); 
