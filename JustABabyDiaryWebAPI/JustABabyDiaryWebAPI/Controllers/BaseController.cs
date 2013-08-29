@@ -16,7 +16,7 @@ namespace JustABabyDiaryWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                var errResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                var errResponse = this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 throw new HttpResponseException(errResponse);
             }
         }
