@@ -8,6 +8,7 @@ using System.Web.Http;
 using JustABabyDiaryWebAPI.Models.ControllerModels;
 using JustABabyDiaryWebAPI.Models;
 using MongoDB.Bson;
+using MongoDB.Driver.Linq;
 using System.Web.Http.ValueProviders;
 using BloggingSystem.WebAPI.Attributes;
 
@@ -30,6 +31,21 @@ namespace JustABabyDiaryWebAPI.Controllers
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
                 {
+                    var usersWithSpecificId = from u in this.db.GetCollection<User>("userInfo").AsQueryable()
+                                              where u.Id.ToString() == userId
+                                              select u;
+                    User selectedUser = usersWithSpecificId.FirstOrDefault();
+
+                    if (selectedUser==null)
+                    {
+                        throw new NullReferenceException("User does not exist!");
+                    }
+
+                    if (selectedUser.SessionKey==null || selectedUser.SessionKey==String.Empty)
+                    {
+                        throw new NullReferenceException("User is logged out!");
+                    }
+
                     BabyProfile babyProfile = new BabyProfile
                     {
                         Name=babyModel.Name,
