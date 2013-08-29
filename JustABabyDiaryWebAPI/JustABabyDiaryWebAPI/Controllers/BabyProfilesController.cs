@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using JustABabyDiaryWebAPI.Models.ControllerModels;
 using JustABabyDiaryWebAPI.Models;
+using MongoDB.Bson;
 
 namespace JustABabyDiaryWebAPI.Controllers
 {
@@ -20,20 +21,28 @@ namespace JustABabyDiaryWebAPI.Controllers
             this.db = provider.GetMongoDatabase();
         }
 
-        public HttpResponseMessage PostBabyProfile(BabyProfileModel babyModel)
+        [HttpPost]
+        public HttpResponseMessage PostBabyProfile([FromBody]BabyProfileModel babyModel, [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string userId)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
                 {
-                    BabyProfile profile = new BabyProfile
+                    BabyProfile babyProfile = new BabyProfile
                     {
                         Name=babyModel.Name,
                         BirthDay=babyModel.BirthDay,
-
-                    
+                        Mother=babyModel.Mother,
+                        Father=babyModel.Father,
+                        Gender=babyModel.Gender,
+                        BirthWeight=babyModel.BirthWeight,
+                        Height=babyModel.Height,
+                        TownOfBirth=babyModel.TownOfBirth,
+                        PictureName=babyModel.PictureName
                     };
 
-                    var response = this.Request.CreateResponse(HttpStatusCode.Created);
+                    this.db.CreateCollection(userId.ToString());
+
+                    var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id);
                     return response;
                 }
             );
