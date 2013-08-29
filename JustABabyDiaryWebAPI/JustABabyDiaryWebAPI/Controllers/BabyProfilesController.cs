@@ -44,7 +44,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                     BabyProfile babyProfile = new BabyProfile
                     {
                         Name=babyModel.Name,
-                        BirthDay=babyModel.BirthDay,
+                        //BirthDay=babyModel.BirthDay,
                         Mother=babyModel.Mother,
                         Father=babyModel.Father,
                         Gender=babyModel.Gender,
@@ -54,7 +54,8 @@ namespace JustABabyDiaryWebAPI.Controllers
                         PictureName=babyModel.PictureName
                     };
 
-                    this.db.CreateCollection(selectedUser.Id.ToString());
+                    var collection = this.db.GetCollection<BabyProfile>(selectedUser.Id.ToString());
+                    collection.Insert<BabyProfile>(babyProfile);
 
                     var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id);
                     return response;

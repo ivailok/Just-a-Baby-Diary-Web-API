@@ -12,36 +12,44 @@ namespace JustABabyDiaryWebAPI.Models.ControllerModels
         [BsonId]
         public ObjectId Id { get; set; }
 
+        [BsonIgnoreIfNull]
         public string Name { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        //public DateTime? BirthDay { get; set; }
 
-        public Gender Gender { get; set; }
+        [BsonIgnoreIfNull]
+        public string Gender { get; set; }
 
+        [BsonIgnoreIfNull]
         public string Mother { get; set; }
 
+        [BsonIgnoreIfNull]
         public string Father { get; set; }
 
+        [BsonIgnoreIfNull]
         public string PictureName { get; set; }
 
+        [BsonIgnoreIfNull]
         public string TownOfBirth { get; set; }
 
+        [BsonIgnoreIfNull]
         public int BirthWeight { get; set; }
 
+        [BsonIgnoreIfNull]
         public int Height { get; set; }
 
         [BsonConstructor]
-        public BabyProfileModel(string name, DateTime birthday, Gender gender, string mother, string father,
+        public BabyProfileModel(string name, DateTime birthday, string gender, string mother, string father,
             string pictureName, string townOfBirth, int weight, int height)
         {
             this.Name = name;
-            this.BirthDay = birthday;
+            //this.BirthDay = birthday;
             this.Gender = gender;
             this.Mother = mother;
             this.Father = father;
             this.PictureName = pictureName;
             this.TownOfBirth = townOfBirth;
-            this.BirthWeight = BirthWeight;
+            this.BirthWeight = weight;
             this.Height = height;
         }
     }
