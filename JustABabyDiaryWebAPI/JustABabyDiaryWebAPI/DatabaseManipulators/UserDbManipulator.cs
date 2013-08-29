@@ -73,15 +73,20 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
                 throw new ArgumentException("Session has expired.");
             }
 
-            var query = Query.EQ("sessionKey", sessionKey);
-            var update = Update.Set("sessionKey", "");
+            var query = new QueryDocument {
+                { "Username", foundUserBySessionKey.Username },
+            };
+            var update = new UpdateDocument {
+                { "$set", new BsonDocument("SessionKey", "") }
+            };
             this.usersCollection.Update(query, update);
         }
 
         private User GetUserBySessionKey(string sessionKey)
         {
             return this.usersCollection.AsQueryable()
-                .Single(u => u.SessionKey == sessionKey);
+                .Where(u => u.SessionKey == sessionKey)
+                .Select(u => u).FirstOrDefault();
         }
 
         private User GetUserByUsername(string username)
