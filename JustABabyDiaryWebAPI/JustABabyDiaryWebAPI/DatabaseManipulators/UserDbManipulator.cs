@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using JustABabyDiaryWebAPI.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using MongoDB.Driver.Linq;
 using System.Text;
 
@@ -17,13 +19,13 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
         private static readonly Random rand = new Random();
 
         private MongoDatabase db;
-        private MongoCollection<User> usersCollecion;
+        private MongoCollection<User> usersCollection;
 
         public UserDbManipulator()
         {
             DatabaseProviders.DatabaseProvider provider = new DatabaseProviders.DatabaseProvider();
             this.db = provider.GetMongoDatabase();
-            this.usersCollecion = db.GetCollection<User>("usersInfo");
+            this.usersCollection = db.GetCollection<User>("usersInfo");
         }
 
         private string GenerateSessionKey(string userName)
@@ -48,7 +50,7 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
                 if (foundUserByEmail == null)
                 {
                     user.SessionKey = this.GenerateSessionKey(user.Username);
-                    this.usersCollecion.Insert<User>(user);
+                    this.usersCollection.Insert<User>(user);
 
                     this.db.CreateCollection(user.Id.ToString());
 
@@ -71,26 +73,27 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
                 throw new ArgumentException("Session has expired.");
             }
 
-            foundUserBySessionKey.SessionKey = null;
-            //this.usersCollecion.Find(
+            var query = Query.EQ("sessionKey", sessionKey);
+            var update = Update.Set("sessionKey", "");
+            this.usersCollection.Update(query, update);
         }
 
         private User GetUserBySessionKey(string sessionKey)
         {
-            return this.usersCollecion.AsQueryable()
+            return this.usersCollection.AsQueryable()
                 .Single(u => u.SessionKey == sessionKey);
         }
 
         private User GetUserByUsername(string username)
         {
-            return this.usersCollecion.AsQueryable()
+            return this.usersCollection.AsQueryable()
                 .Where(u => u.Username == username)
                 .Select(u => u).FirstOrDefault();
         }
 
         private User GetUserByEmail(string email)
         {
-            return this.usersCollecion.AsQueryable()
+            return this.usersCollection.AsQueryable()
                 .Where(u => u.Email == email)
                 .Select(u => u).FirstOrDefault();
         }
