@@ -26,25 +26,19 @@ namespace JustABabyDiaryWebAPI.Controllers
 
         [HttpPost]
         public HttpResponseMessage PostBabyProfile([FromBody]BabyProfileModel babyModel,
-            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string userId)
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
                 {
-                    ObjectId userIdObj = new ObjectId(userId);
                     var usersWithSpecificId = from u in this.db.GetCollection<User>("userInfo").AsQueryable()
-                                              where u.Id == userIdObj
+                                              where u.SessionKey == sessionKey
                                               select u;
                     User selectedUser = usersWithSpecificId.FirstOrDefault();
 
                     if (selectedUser==null)
                     {
-                        throw new NullReferenceException("User does not exist!");
-                    }
-
-                    if (selectedUser.SessionKey==null || selectedUser.SessionKey==String.Empty)
-                    {
-                        throw new NullReferenceException("User is logged out!");
+                        throw new NullReferenceException("User is logged out or does not exist!");
                     }
 
                     BabyProfile babyProfile = new BabyProfile
@@ -60,7 +54,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                         PictureName=babyModel.PictureName
                     };
 
-                    this.db.CreateCollection(userId);
+                    this.db.CreateCollection(selectedUser.Id.ToString());
 
                     var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id);
                     return response;
