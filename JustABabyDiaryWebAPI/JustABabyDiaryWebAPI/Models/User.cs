@@ -17,7 +17,13 @@ namespace JustABabyDiaryWebAPI.Models
 
         public string Username { get; set; }
 
+        public string Nickname { get; set; }
+
         public string AuthCode { get; set; }
+
+        public string SessionKey { get; set; }
+
+        public string Email { get; set; }
 
         public ICollection<BabyProfile> BabyProfiles { get; set; }
 
@@ -28,12 +34,13 @@ namespace JustABabyDiaryWebAPI.Models
         }
 
         [BsonConstructor]
-        public User(string username, string authCode)
+        public User(string username, string nickname, string authCode, string email)
         {
             this.Username = username;
+            this.Nickname = nickname;
             this.AuthCode = authCode;
+            this.Email = email;
             this.BabyProfiles = new List<BabyProfile>();
-
         }
     }
 }
