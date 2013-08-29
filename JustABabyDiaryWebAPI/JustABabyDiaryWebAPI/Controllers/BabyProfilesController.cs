@@ -67,7 +67,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
         [HttpPut]
         public HttpResponseMessage UpdateBabyProfile([FromBody]BabyProfileModel babyModel,
-            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string name)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                () =>
@@ -84,7 +84,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
                    var babyCollection = this.db.GetCollection<BabyProfile>("user" + selectedUser.Id.ToString());
                    var babyProfilesWithSpecific = from p in babyCollection.AsQueryable()
-                                     where p.Name == babyModel.Name
+                                     where p.Name == name
                                      select p;
 
                    var selectedBabyProfile = babyProfilesWithSpecific.FirstOrDefault();
