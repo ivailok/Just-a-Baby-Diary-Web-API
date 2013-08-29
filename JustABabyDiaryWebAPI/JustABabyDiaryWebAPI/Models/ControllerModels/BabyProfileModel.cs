@@ -10,6 +10,7 @@ namespace JustABabyDiaryWebAPI.Models.ControllerModels
     public class BabyProfileModel
     {
         [BsonId]
+        [BsonIgnoreIfDefault]
         public ObjectId Id { get; set; }
 
         [BsonIgnoreIfNull]
@@ -32,7 +33,6 @@ namespace JustABabyDiaryWebAPI.Models.ControllerModels
         [BsonIgnoreIfNull]
         public string TownOfBirth { get; set; }
 
-        [BsonIgnoreIfNull]
         public int BirthWeight { get; set; }
 
         [BsonIgnoreIfNull]
