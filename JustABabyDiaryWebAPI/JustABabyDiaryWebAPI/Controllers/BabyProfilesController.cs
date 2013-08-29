@@ -54,7 +54,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                         PictureName=babyModel.PictureName
                     };
 
-                    var collection = this.db.GetCollection<BabyProfile>(selectedUser.Id.ToString());
+                    var collection = this.db.GetCollection<BabyProfile>("user"+selectedUser.Id.ToString());
                     collection.Insert<BabyProfile>(babyProfile);
 
                     var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id);
