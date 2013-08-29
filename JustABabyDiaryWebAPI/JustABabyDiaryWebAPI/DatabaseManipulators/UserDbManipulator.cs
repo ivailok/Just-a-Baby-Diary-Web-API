@@ -16,12 +16,13 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
         private const int SessionKeyLength = 50;
         private static readonly Random rand = new Random();
 
+        private MongoDatabase db;
         private MongoCollection<User> usersCollecion;
 
         public UserDbManipulator()
         {
             DatabaseProviders.DatabaseProvider provider = new DatabaseProviders.DatabaseProvider();
-            MongoDatabase db = provider.GetMongoDatabase();
+            this.db = provider.GetMongoDatabase();
             this.usersCollecion = db.GetCollection<User>("usersInfo");
         }
 
@@ -48,6 +49,9 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
                 {
                     user.SessionKey = this.GenerateSessionKey(user.Username);
                     this.usersCollecion.Insert<User>(user);
+
+                    this.db.CreateCollection(user.Id.ToString());
+
                     return user;
                 }
                 throw new ArgumentException("Email is already taken.");
@@ -68,7 +72,6 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
             }
 
             foundUserBySessionKey.SessionKey = null;
-            var query = new QueryDocument();
             //this.usersCollecion.Find(
         }
 
