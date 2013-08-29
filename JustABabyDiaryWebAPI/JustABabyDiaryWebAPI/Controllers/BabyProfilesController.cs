@@ -55,6 +55,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                     };
                     var collection = this.db.GetCollection("user" + selectedUser.Id.ToString());
                     collection.Insert<BabyProfile>(babyProfile);
+                    this.db.CreateCollection("baby" + babyProfile.Id);
 
                     var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id.ToString());
                     return response;
@@ -105,5 +106,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
             return responseMsg;
         }
+
+
     }
 }

@@ -30,11 +30,8 @@ namespace JustABabyDiaryWebAPI.Models
 
         public int Height { get; set; }
 
-        public ICollection<BabyEvent> BabyEvents { get; set; }
-
         public BabyProfile()
         {
-            this.BabyEvents = new List<BabyEvent>();
         }
 
         public BabyProfile(string name, DateTime birthday, string gender, string mother, string father,
@@ -49,7 +46,6 @@ namespace JustABabyDiaryWebAPI.Models
             this.TownOfBirth = townOfBirth;
             this.BirthWeight = weight;
             this.Height = height;
-            this.BabyEvents = new List<BabyEvent>();
         }
     }
 }
