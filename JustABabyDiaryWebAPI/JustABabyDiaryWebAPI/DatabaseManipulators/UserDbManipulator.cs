@@ -68,6 +68,7 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
             }
 
             foundUserBySessionKey.SessionKey = null;
+            this.usersCollecion.FindAndModify();
         }
 
         private User GetUserBySessionKey(string sessionKey)
