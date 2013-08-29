@@ -51,7 +51,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
                     var loggedModel = new LoggedUserModel()
                     {
-                        DisplayName = registeredUser.DisplayName,
+                        DisplayName = registeredUser.Nickname,
                         SessionKey = registeredUser.SessionKey
                     };
 
