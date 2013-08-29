@@ -8,6 +8,8 @@ using System.Web.Http;
 using JustABabyDiaryWebAPI.Models.ControllerModels;
 using JustABabyDiaryWebAPI.Models;
 using MongoDB.Bson;
+using System.Web.Http.ValueProviders;
+using BloggingSystem.WebAPI.Attributes;
 
 namespace JustABabyDiaryWebAPI.Controllers
 {
@@ -22,7 +24,8 @@ namespace JustABabyDiaryWebAPI.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage PostBabyProfile([FromBody]BabyProfileModel babyModel, [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string userId)
+        public HttpResponseMessage PostBabyProfile([FromBody]BabyProfileModel babyModel,
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string userId)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
@@ -40,7 +43,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                         PictureName=babyModel.PictureName
                     };
 
-                    this.db.CreateCollection(userId.ToString());
+                    this.db.CreateCollection(userId);
 
                     var response = this.Request.CreateResponse(HttpStatusCode.Created, babyProfile.Id);
                     return response;
