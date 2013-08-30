@@ -16,9 +16,9 @@ namespace JustABabyDiaryWebAPI.Controllers
 {
     public class BabyEventsController : BaseController
     {
-         private MongoDatabase db;
+        private MongoDatabase db;
 
-         public BabyEventsController()
+        public BabyEventsController()
         {
             DatabaseProviders.DatabaseProvider provider = new DatabaseProviders.DatabaseProvider();
             this.db = provider.GetMongoDatabase();
@@ -43,10 +43,10 @@ namespace JustABabyDiaryWebAPI.Controllers
 
                     BabyEvent babyEvent = new BabyEvent()
                     {
-                        Title=babyEventModel.Title,
-                        Date=babyEventModel.Date,
-                        Description=babyEventModel.Description,
-                        PictureNames=babyEventModel.PictureNames
+                        Title = babyEventModel.Title,
+                        Date = babyEventModel.Date,
+                        Description = babyEventModel.Description,
+                        PictureNames = babyEventModel.PictureNames
                     };
 
                     var collection = this.db.GetCollection("baby" + babyProfileId);
@@ -77,15 +77,16 @@ namespace JustABabyDiaryWebAPI.Controllers
                    {
                        throw new NullReferenceException("User is logged out or does not exist!");
                    }
+                   var eventIdObj = new ObjectId(eventId);
 
                    var babyEvents = this.db.GetCollection<BabyEvent>("baby" + babyProfileId);
                    var babyEventWithSpecificId = from ev in babyEvents.AsQueryable()
-                                                  where ev.Id.ToString() == eventId
-                                                  select ev;
+                                                 where ev.Id == eventIdObj
+                                                 select ev;
 
                    var selectedBabyEvent = babyEventWithSpecificId.FirstOrDefault();
 
-                   ChangePropertiesOfBabyProfile(babyEventModel,selectedBabyEvent, babyEvents);
+                   ChangePropertiesOfBabyProfile(babyEventModel, selectedBabyEvent, babyEvents);
 
                    var response = this.Request.CreateResponse(HttpStatusCode.OK);
                    return response;
@@ -96,21 +97,21 @@ namespace JustABabyDiaryWebAPI.Controllers
         }
 
         private void ChangePropertiesOfBabyProfile(
-            BabyEventModel babyEventModel,BabyEvent selectedBabyEvent, MongoCollection babyEvents)
+            BabyEventModel babyEventModel, BabyEvent selectedBabyEvent, MongoCollection babyEvents)
         {
-            if (babyEventModel.Title!=null)
+            if (babyEventModel.Title != null)
             {
                 var query = new QueryDocument { { "Title", selectedBabyEvent.Title } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Title", babyEventModel.Title) } };
                 babyEvents.Update(query, update);
             }
-            if (babyEventModel.Description!=null)
+            if (babyEventModel.Description != null)
             {
                 var query = new QueryDocument { { "Description", selectedBabyEvent.Description } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Description", babyEventModel.Description) } };
                 babyEvents.Update(query, update);
             }
-            if (babyEventModel.Date!=null)
+            if (babyEventModel.Date != null)
             {
                 var query = new QueryDocument { { "Date", selectedBabyEvent.Date } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Date", babyEventModel.Date) } };
