@@ -116,7 +116,7 @@ namespace JustABabyDiaryWebAPI.Controllers
                        throw new NullReferenceException("User is logged out or does not exist!");
                    }
 
-                   var babyCollection = this.db.GetCollection<BabyProfile>("user" + selectedUser.Id.ToString()).AsQueryable();
+                   var babyCollection = this.db.GetCollection<BabyProfile>("user" + selectedUser.Id.ToString()).AsQueryable().ToList();
 
                    var response = this.Request.CreateResponse(HttpStatusCode.OK, babyCollection);
                    return response;
