@@ -25,7 +25,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
         [HttpPost]
         public HttpResponseMessage PostBabyEvent([FromBody]BabyEventModel babyEventModel,
-            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId, string eventId)
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
