@@ -99,6 +99,33 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetAllBabyProfiles(
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+               () =>
+               {
+                   var usersWithSpecificId = from u in this.db.GetCollection<User>("usersInfo").AsQueryable()
+                                             where u.SessionKey == sessionKey
+                                             select u;
+                   User selectedUser = usersWithSpecificId.FirstOrDefault();
+
+                   if (selectedUser == null)
+                   {
+                       throw new NullReferenceException("User is logged out or does not exist!");
+                   }
+
+                   var babyCollection = this.db.GetCollection<BabyProfile>("user" + selectedUser.Id.ToString()).AsQueryable();
+
+                   var response = this.Request.CreateResponse(HttpStatusCode.OK, babyCollection);
+                   return response;
+               }
+           );
+
+            return responseMsg;
+        }
+
         private void ChangePropertiesOfBabyProfile(BabyProfileModel babyModel,
             MongoCollection babyCollection,BabyProfile selectedBabyProfile)
         {
