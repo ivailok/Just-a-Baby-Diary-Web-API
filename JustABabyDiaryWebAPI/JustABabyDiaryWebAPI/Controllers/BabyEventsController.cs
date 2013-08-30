@@ -62,7 +62,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
 
         [HttpPut]
-        public HttpResponseMessage UpdateBabyProfile([FromBody]BabyEventModel babyEventModel,
+        public HttpResponseMessage UpdateBabyEvent([FromBody]BabyEventModel babyEventModel,
             [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId, string eventId)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
@@ -87,6 +87,54 @@ namespace JustABabyDiaryWebAPI.Controllers
                    var selectedBabyEvent = babyEventWithSpecificId.FirstOrDefault();
 
                    ChangePropertiesOfBabyProfile(babyEventModel, selectedBabyEvent, babyEvents);
+
+                   var response = this.Request.CreateResponse(HttpStatusCode.OK);
+                   return response;
+               }
+           );
+
+            return responseMsg;
+        }
+
+         [HttpPut]
+        public HttpResponseMessage UpdateAddPhotoToEvent([FromBody]string newPictureName,
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId, string eventId)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+               () =>
+               {
+                   var usersWithSpecificSessionKey = from u in this.db.GetCollection<User>("usersInfo").AsQueryable()
+                                                     where u.SessionKey == sessionKey
+                                                     select u;
+                   User selectedUser = usersWithSpecificSessionKey.FirstOrDefault();
+
+                   if (selectedUser == null)
+                   {
+                       throw new NullReferenceException("User is logged out or does not exist!");
+                   }
+                   var eventIdObj = new ObjectId(eventId);
+
+                   var babyEvents = this.db.GetCollection<BabyEvent>("baby" + babyProfileId);
+                   var babyEventWithSpecificId = from ev in babyEvents.AsQueryable()
+                                                 where ev.Id == eventIdObj
+                                                 select ev;
+                   if (newPictureName==null)
+                   {
+                        throw new NullReferenceException("Unexisting Picture!");
+                   }
+
+                   var selectedBabyEvent = babyEventWithSpecificId.FirstOrDefault();
+                   var eventPicturesNames = selectedBabyEvent.PictureNames;
+                   eventPicturesNames.Add(newPictureName);
+
+                  // var newEventPicturesNames = eventPicturesNames.Add(newPictureName);
+
+                  // babyEvents.Update(
+                  //babyEvents.Update({selectedBabyEvent.PictureNames:newEventPicturesNames});
+
+                  // var query = new QueryDocument { { "PictureNames", eventPicturesNames } };
+                  // var update = new UpdateDocument { { "$set", new BsonDocument("Title", babyEventModel.Title) } };
+                  // babyEvents.Update(query, update);
 
                    var response = this.Request.CreateResponse(HttpStatusCode.OK);
                    return response;
