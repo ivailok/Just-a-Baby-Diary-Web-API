@@ -181,6 +181,7 @@
     <Compile Include="Models\BabyEvent.cs" />
     <Compile Include="Models\BabyProfile.cs" />
     <Compile Include="Models\ControllerModels\BabyEventModel.cs" />
+    <Compile Include="Models\ControllerModels\BabyGetEventModel.cs" />
     <Compile Include="Models\ControllerModels\BabyGetProfileModel.cs" />
     <Compile Include="Models\ControllerModels\BabyProfileModel.cs" />
     <Compile Include="Models\ControllerModels\LoggedUserModel.cs" />
