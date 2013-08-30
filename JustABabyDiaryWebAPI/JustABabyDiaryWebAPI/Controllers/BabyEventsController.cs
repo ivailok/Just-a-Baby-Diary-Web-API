@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ValueProviders;
+using MongoDB.Bson;
 
 namespace JustABabyDiaryWebAPI.Controllers
 {
@@ -84,7 +85,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
                    var selectedBabyEvent = babyEventWithSpecificId.FirstOrDefault();
 
-                   ChangePropertiesOfBabyProfile(babyEventModel,selectedBabyEvent);
+                   ChangePropertiesOfBabyProfile(babyEventModel,selectedBabyEvent, babyEvents);
 
                    var response = this.Request.CreateResponse(HttpStatusCode.OK);
                    return response;
@@ -94,19 +95,26 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
-        private void ChangePropertiesOfBabyProfile(BabyEventModel babyEventModel,BabyEvent selectedBabyEvent)
+        private void ChangePropertiesOfBabyProfile(
+            BabyEventModel babyEventModel,BabyEvent selectedBabyEvent, MongoCollection babyEvents)
         {
             if (babyEventModel.Title!=null)
             {
-                selectedBabyEvent.Title = babyEventModel.Title;
+                var query = new QueryDocument { { "Title", selectedBabyEvent.Title } };
+                var update = new UpdateDocument { { "$set", new BsonDocument("Title", babyEventModel.Title) } };
+                babyEvents.Update(query, update);
             }
             if (babyEventModel.Description!=null)
             {
-                selectedBabyEvent.Description = babyEventModel.Description;
+                var query = new QueryDocument { { "Description", selectedBabyEvent.Description } };
+                var update = new UpdateDocument { { "$set", new BsonDocument("Description", babyEventModel.Description) } };
+                babyEvents.Update(query, update);
             }
             if (babyEventModel.Date!=null)
             {
-                selectedBabyEvent.Date = babyEventModel.Date;
+                var query = new QueryDocument { { "Date", selectedBabyEvent.Date } };
+                var update = new UpdateDocument { { "$set", new BsonDocument("Date", babyEventModel.Date) } };
+                babyEvents.Update(query, update);
             }
         }
     }
