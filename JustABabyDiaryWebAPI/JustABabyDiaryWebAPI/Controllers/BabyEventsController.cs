@@ -96,9 +96,10 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
-         [HttpPut]
+        [HttpPut]
+        [ActionName("addpicture")]
         public HttpResponseMessage UpdateAddPhotoToEvent([FromBody]string newPictureName,
-            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId, string eventId)
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string eventId,string babyProfileId)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                () =>

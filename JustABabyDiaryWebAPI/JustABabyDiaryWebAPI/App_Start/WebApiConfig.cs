@@ -19,6 +19,15 @@ namespace JustABabyDiaryWebAPI
             );
 
             config.Routes.MapHttpRoute(
+                name: "BabyEventsApi",
+                routeTemplate: "api/events/addpicture",
+                defaults: new
+                {
+                    controller = "babyevents"
+                }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
