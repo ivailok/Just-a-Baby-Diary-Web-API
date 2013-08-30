@@ -117,14 +117,25 @@ namespace JustABabyDiaryWebAPI.Controllers
                    }
 
                    var babyCollection = this.db.GetCollection<BabyProfile>("user" + selectedUser.Id.ToString()).AsQueryable();
+                   IEnumerable<BabyGetProfileModel> visibleModels;
 
-                   var babyProfilesList = new List<BabyProfile>();
-                   foreach (var babyProfile in babyCollection)
-                   {
-                       babyProfilesList.Add(babyProfile);
-                   }
+                   visibleModels =
+                       from item in babyCollection
+                       select new BabyGetProfileModel()
+                       {
+                           Id = item.Id.ToString(),
+                           Name = item.Name,
+                           Mother = item.Mother,
+                           Father = item.Father,
+                           BirthDay = item.BirthDay,
+                           BirthWeight = item.BirthWeight,
+                           Gender = item.Gender,
+                           Height = item.Height,
+                           PictureName = item.PictureName,
+                           TownOfBirth = item.TownOfBirth
+                       };
 
-                   var response = this.Request.CreateResponse(HttpStatusCode.OK, babyProfilesList);
+                   var response = this.Request.CreateResponse(HttpStatusCode.OK, visibleModels);
                    return response;
                }
            );
