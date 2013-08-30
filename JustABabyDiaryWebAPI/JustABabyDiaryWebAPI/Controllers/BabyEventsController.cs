@@ -96,6 +96,45 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetAllBabyEvents(
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+               () =>
+               {
+                   var usersWithSpecificId = from u in this.db.GetCollection<User>("usersInfo").AsQueryable()
+                                             where u.SessionKey == sessionKey
+                                             select u;
+                   User selectedUser = usersWithSpecificId.FirstOrDefault();
+
+                   if (selectedUser == null)
+                   {
+                       throw new NullReferenceException("User is logged out or does not exist!");
+                   }
+
+                   var babyCollection = this.db.GetCollection<BabyEvent>("baby" + babyProfileId).AsQueryable();
+                   IEnumerable<BabyGetEventModel> visibleEventsModels;
+
+                   visibleEventsModels =
+                       from item in babyCollection
+                       select new BabyGetEventModel()
+                       {
+                           Id = item.Id.ToString(),
+                           Title=item.Title,
+                           Description=item.Description,
+                           Date=item.Date,
+                           PictureNames=item.PictureNames
+                       };
+
+                   var response = this.Request.CreateResponse(HttpStatusCode.OK, visibleEventsModels);
+                   return response;
+               }
+           );
+
+            return responseMsg;
+        }
+
         private void ChangePropertiesOfBabyProfile(
             BabyEventModel babyEventModel, BabyEvent selectedBabyEvent, MongoCollection babyEvents)
         {
