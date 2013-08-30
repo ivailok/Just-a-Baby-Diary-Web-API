@@ -25,7 +25,7 @@ namespace JustABabyDiaryWebAPI.Controllers
 
         [HttpPost]
         public HttpResponseMessage PostBabyEvent([FromBody]BabyEventModel babyEventModel,
-            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId)
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId, string eventId)
         {
             HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
@@ -59,5 +59,55 @@ namespace JustABabyDiaryWebAPI.Controllers
             return responseMsg;
         }
 
+
+        [HttpPut]
+        public HttpResponseMessage UpdateBabyProfile([FromBody]BabyEventModel babyEventModel,
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]string sessionKey, string babyProfileId, string eventId)
+        {
+            HttpResponseMessage responseMsg = this.PerformOperationAndHandleExceptions(
+               () =>
+               {
+                   var usersWithSpecificSessionKey = from u in this.db.GetCollection<User>("usersInfo").AsQueryable()
+                                                     where u.SessionKey == sessionKey
+                                                     select u;
+                   User selectedUser = usersWithSpecificSessionKey.FirstOrDefault();
+
+                   if (selectedUser == null)
+                   {
+                       throw new NullReferenceException("User is logged out or does not exist!");
+                   }
+
+                   var babyEvents = this.db.GetCollection<BabyEvent>("baby" + babyProfileId);
+                   var babyEventWithSpecificId = from ev in babyEvents.AsQueryable()
+                                                  where ev.Id.ToString() == eventId
+                                                  select ev;
+
+                   var selectedBabyEvent = babyEventWithSpecificId.FirstOrDefault();
+
+                   ChangePropertiesOfBabyProfile(babyEventModel,selectedBabyEvent);
+
+                   var response = this.Request.CreateResponse(HttpStatusCode.OK);
+                   return response;
+               }
+           );
+
+            return responseMsg;
+        }
+
+        private void ChangePropertiesOfBabyProfile(BabyEventModel babyEventModel,BabyEvent selectedBabyEvent)
+        {
+            if (babyEventModel.Title!=null)
+            {
+                selectedBabyEvent.Title = babyEventModel.Title;
+            }
+            if (babyEventModel.Description!=null)
+            {
+                selectedBabyEvent.Description = babyEventModel.Description;
+            }
+            if (babyEventModel.Date!=null)
+            {
+                selectedBabyEvent.Date = babyEventModel.Date;
+            }
+        }
     }
 }
