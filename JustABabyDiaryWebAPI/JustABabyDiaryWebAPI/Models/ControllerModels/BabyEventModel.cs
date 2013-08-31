@@ -14,6 +14,6 @@ namespace JustABabyDiaryWebAPI.Models.ControllerModels
 
         public string Description { get; set; }
 
-        public ICollection<string> PictureNames { get; set; }
+        public ICollection<Picture> PictureNames { get; set; }
     }
 }

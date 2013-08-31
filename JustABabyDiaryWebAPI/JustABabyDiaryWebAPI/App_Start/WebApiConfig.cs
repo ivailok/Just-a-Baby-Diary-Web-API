@@ -20,7 +20,7 @@ namespace JustABabyDiaryWebAPI
 
             config.Routes.MapHttpRoute(
                 name: "BabyEventsApi",
-                routeTemplate: "api/events/addpicture",
+                routeTemplate: "api/babyevents/{action}/{babyProfileId}/{eventId}",
                 defaults: new
                 {
                     controller = "babyevents"

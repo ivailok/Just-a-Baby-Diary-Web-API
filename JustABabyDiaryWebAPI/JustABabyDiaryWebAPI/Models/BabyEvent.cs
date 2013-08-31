@@ -18,11 +18,11 @@ namespace JustABabyDiaryWebAPI.Models
 
         public string Description { get; set; }
 
-        public ICollection<string> PictureNames { get; set; }
+        public ICollection<Picture> PictureNames { get; set; }
 
         public BabyEvent()
         {
-            this.PictureNames = new List<string>(); 
+            this.PictureNames = new List<Picture>(); 
         }
     }
 }

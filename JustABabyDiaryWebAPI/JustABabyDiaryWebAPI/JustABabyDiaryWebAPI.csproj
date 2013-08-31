@@ -55,6 +55,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\ControllerModels\UserLoginModel.cs" />
     <Compile Include="Models\ControllerModels\UserRegisterModel.cs" />
     <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

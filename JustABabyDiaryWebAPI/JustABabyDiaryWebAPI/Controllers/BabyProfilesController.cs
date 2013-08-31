@@ -149,55 +149,55 @@ namespace JustABabyDiaryWebAPI.Controllers
 
             if (babyModel.Name != null)
             {
-                var query = new QueryDocument { { "Name", selectedBabyProfile.Name } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Name", babyModel.Name) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.Mother != null)
             {
-                var query = new QueryDocument { { "Mother", selectedBabyProfile.Mother } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Mother", babyModel.Mother) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.Father != null)
             {
-                var query = new QueryDocument { { "Father", selectedBabyProfile.Father } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Father", babyModel.Father) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.BirthDay != null)
             {
-                var query = new QueryDocument { { "BirthDay", selectedBabyProfile.BirthDay } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("BirthDay", babyModel.BirthDay) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.BirthWeight != 0)
             {
-                var query = new QueryDocument { { "BirthWeight", selectedBabyProfile.BirthWeight } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("BirthWeight", babyModel.BirthWeight) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.Gender != null)
             {
-                var query = new QueryDocument { { "Gender", selectedBabyProfile.Gender } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Gender", babyModel.Gender) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.Height != 0)
             {
-                var query = new QueryDocument { { "Height", selectedBabyProfile.Height } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("Height", babyModel.Height) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.PictureName != null)
             {
-                var query = new QueryDocument { { "PictureName", selectedBabyProfile.PictureName } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("PictureName", babyModel.PictureName) } };
                 babyCollection.Update(query, update);
             }
             if (babyModel.TownOfBirth != null)
             {
-                var query = new QueryDocument { { "TownOfBirth", selectedBabyProfile.TownOfBirth } };
+                var query = new QueryDocument { { "_id", selectedBabyProfile.Id } };
                 var update = new UpdateDocument { { "$set", new BsonDocument("TownOfBirth", babyModel.TownOfBirth) } };
                 babyCollection.Update(query, update);
             }
