@@ -85,10 +85,15 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
         public User Login(UserLoginModel model)
         {
             User user = this.CheckUsername(model.Username);
-
+            
             if (user == null)
             {
-                throw new ArgumentException("Invalid username or password.");
+                throw new ArgumentException("Invalid username.");
+            }
+
+            if (user.AuthCode != model.AuthCode)
+            {
+                throw new ArgumentException("Invalid password.");
             }
 
             user.SessionKey = this.GenerateSessionKey(model.Username);
