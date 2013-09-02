@@ -84,7 +84,7 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
 
         public User Login(UserLoginModel model)
         {
-            User user = this.CheckUsername(model.Username);
+            User user = this.GetUserByUsername(model.Username);
             
             if (user == null)
             {
@@ -107,12 +107,6 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
             this.usersCollection.Update(query, update);
 
             return user;
-        }
-
-        private User CheckUsername(string username)
-        {
-            return this.usersCollection.AsQueryable()
-                .Single(u => u.Username == username);
         }
 
         private User GetUserBySessionKey(string sessionKey)
