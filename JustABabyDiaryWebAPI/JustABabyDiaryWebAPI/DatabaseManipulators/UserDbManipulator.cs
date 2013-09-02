@@ -52,7 +52,7 @@ namespace JustABabyDiaryWebAPI.DatabaseManipulators
                     user.SessionKey = this.GenerateSessionKey(user.Username);
                     this.usersCollection.Insert<User>(user);
 
-                    this.db.CreateCollection(user.Id.ToString());
+                    this.db.CreateCollection("user" + user.Id.ToString());
 
                     return user;
                 }
