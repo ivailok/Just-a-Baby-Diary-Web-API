@@ -11,7 +11,7 @@ namespace JustABabyDiaryWebAPI.Models.ControllerModels
 
         public string Name { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        public string BirthDay { get; set; }
 
         public string Gender { get; set; }
 

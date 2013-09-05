@@ -14,7 +14,7 @@ namespace JustABabyDiaryWebAPI.Models
 
         public string Name { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        public string BirthDay { get; set; }
 
         public string Gender { get; set; }
 
@@ -34,7 +34,7 @@ namespace JustABabyDiaryWebAPI.Models
         {
         }
 
-        public BabyProfile(string name, DateTime birthday, string gender, string mother, string father,
+        public BabyProfile(string name, string birthday, string gender, string mother, string father,
             string pictureName, string townOfBirth, int weight, int height)
         {
             this.Name = name;
